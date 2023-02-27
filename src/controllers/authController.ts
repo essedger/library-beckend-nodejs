@@ -15,18 +15,19 @@ class authController {
       if (!errors.isEmpty()) {
         return res.status(400).json({ message: 'Registration error', errors });
       }
-      const { username, password } = req.body;
-      const candidate = await User.findOne({ username });
+      const { email, password } = req.body;
+      const candidate = await User.findOne({ email });
       if (candidate) {
-        return res.status(400).json({ message: 'User with this username already exists' });
+        return res.status(400).json({ message: 'User with this email already exists' });
       }
       const hashPassword = bcrypt.hashSync(password, 7);
       const userRole = await Role.findOne({ name: 'USER' });
-      const user = new User({ ...req.body, username, password: hashPassword, roles: [userRole] });
+      const user = new User({ ...req.body, password: hashPassword, roles: [userRole] });
       await user.save();
+      const newUser = await User.findOne({ email }).select('-password');
       return res
         .status(201)
-        .json({ user: { ...user, password: undefined }, message: 'User is successfully registered!' });
+        .json({ user: newUser, message: 'User is successfully registered!' });
     } catch (e) {
       console.log(e);
       res.status(500).json({ message: 'Registration error' });

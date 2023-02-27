@@ -7,7 +7,7 @@ export interface IRole extends Document {
 
 export const roleSchema: Schema<IRole> = new Schema(
   {
-    name: { type: String, unique: true, default: 'USER' },
+    name: { type: String },
   },
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } },
 );
