@@ -1,13 +1,15 @@
-import { Schema, model, Document, Model } from 'mongoose';
+import { Schema, model, Document, Model, Types } from 'mongoose';
 
 export interface IRole extends Document {
-  value: string;
+  id: string;
+  name: string;
 }
 
-const roleSchema: Schema<IRole> = new Schema({
-  value: { type: String, unique: true, default: 'USER' },
-});
+export const roleSchema: Schema<IRole> = new Schema(
+  {
+    name: { type: String, unique: true, default: 'USER' },
+  },
+  { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } },
+);
 
-const Role: Model<IRole> = model('Role', roleSchema);
-
-export default Role;
+export const Role: Model<IRole> = model('role', roleSchema);

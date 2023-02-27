@@ -1,7 +1,10 @@
 {
-  "name": "profi_auth_nodejs",
-  "version": "1.0.0",
+  "name": "Library",
+  "version": "0.0.1",
   "description": "",
+  "keywords": [],
+  "author": "Essedger",
+  "license": "ISC",
   "main": "src/index.ts",
   "scripts": {
     "start": "npx nodemon",
@@ -11,9 +14,6 @@
     "lint": "eslint src/**/*.ts",
     "format": "eslint src/**/*.ts --fix"
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
     "@types/bcryptjs": "^2.4.2",
     "@types/cors": "^2.8.13",

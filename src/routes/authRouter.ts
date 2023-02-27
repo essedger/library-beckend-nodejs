@@ -1,19 +1,14 @@
 import express from 'express';
 import authController from '../controllers/authController';
-import { check } from 'express-validator';
-import roleMiddleware from '../middlewaree/roleMiddleware';
+import roleMiddleware from '../middlewares/roleMiddleware';
+import authMiddleware from '../middlewares/authMiddleware';
+import { loginValidation, registerValidation } from '../validations/validations';
 // import authMiddleware from './middlewaree/authMiddleware'
 export const userRoute = express.Router();
 
-userRoute.post(
-  '/registration',
-  [
-    check('username', 'Имя пользователя не может быть пустым').notEmpty(),
-    check('password', 'Пароль должен быть больше 4 и меньше 10 символов').isLength({ min: 4, max: 10 }),
-  ],
-  authController.registration,
-);
-userRoute.post('/login', authController.login);
-userRoute.get('/users', roleMiddleware(['ADMIN']), authController.getUsers);
+userRoute.post('/api/v1/register/', registerValidation, authController.register);
+userRoute.post('/api/v1/login/', loginValidation, authController.login);
+userRoute.get('/api/v1/users/', roleMiddleware(['ADMIN']), authController.getUsers);
+userRoute.get('/api/v1/me/', authMiddleware, authController.getMe);
 
 export default userRoute;
