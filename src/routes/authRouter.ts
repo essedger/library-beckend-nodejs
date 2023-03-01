@@ -9,6 +9,6 @@ export const userRoute = express.Router();
 userRoute.post('/api/v1/register/', registerValidation, authController.register);
 userRoute.post('/api/v1/login/', loginValidation, authController.login);
 userRoute.get('/api/v1/users/', roleMiddleware(['ADMIN']), authController.getUsers);
-userRoute.get('/api/v1/me/', authMiddleware, authController.getMe);
+userRoute.get('/api/v1/me/', authController.getMe);
 
 export default userRoute;

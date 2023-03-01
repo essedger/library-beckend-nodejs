@@ -1,4 +1,4 @@
-import { Schema, model, Document, Model } from 'mongoose';
+import { Schema, model, Document, Model, Types } from 'mongoose';
 import { IUser, userSchema } from './User';
 
 export interface IBook extends Document {
@@ -11,7 +11,6 @@ export interface IBook extends Document {
   device: string;
   image: string;
   is_deleted: boolean;
-  is_read: boolean;
   link: string;
   notes: string;
   rating: number;
@@ -19,7 +18,9 @@ export interface IBook extends Document {
   source: string;
   type: string;
   genre: string;
+  year: number;
   owner: IUser;
+  favoritedBy: Types.Array<IUser['id']>;
 }
 
 export const bookSchema: Schema<IBook> = new Schema(
@@ -32,7 +33,6 @@ export const bookSchema: Schema<IBook> = new Schema(
     device: { type: String },
     image: { type: String },
     is_deleted: { type: Boolean, default: false },
-    is_read: { type: Boolean, default: false },
     link: { type: String },
     notes: { type: String },
     rating: { type: Number },
@@ -40,7 +40,9 @@ export const bookSchema: Schema<IBook> = new Schema(
     source: { type: String },
     type: { type: String },
     genre: { type: String },
+    year: { type: Number },
     owner: userSchema,
+    favoritedBy: [{ type: Schema.Types.ObjectId, ref: 'user' }],
   },
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } },
 );

@@ -11,6 +11,8 @@ import booksRoute from './routes/booksRouter';
 const PORT = process.env.PORT || 5005;
 const USERNAME = process.env.DB_USERNAME;
 const DB_PASSWORD = process.env.DB_PASSWORD;
+const DB_SERVER = process.env.SERVER_URL;
+const DB_PORT = process.env.DB_PORT;
 
 const app = express();
 mongoose.set('strictQuery', true);
@@ -26,7 +28,8 @@ app.use(booksRoute);
 const start = async () => {
   try {
     await mongoose.connect(
-      `mongodb+srv://${USERNAME}:${DB_PASSWORD}@library.yz89zfk.mongodb.net/?retryWrites=true&w=majority`,
+      `mongodb://${USERNAME}:${DB_PASSWORD}@${DB_SERVER}:${DB_PORT}/?authMechanism=DEFAULT`
+      // `mongodb+srv://${USERNAME}:${DB_PASSWORD}@library.yz89zfk.mongodb.net/?retryWrites=true&w=majority`,
     );
     app.listen(PORT, () => console.log(`server started on port ${PORT}`));
   } catch (e) {

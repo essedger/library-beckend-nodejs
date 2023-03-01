@@ -36,10 +36,14 @@ class authController {
   //Login by username and password
   async login(req: Request, res: Response) {
     try {
-      const { username, password } = req.body;
-      const user = await User.findOne({ username });
+      const { email, password } = req.body;
+      const errors = validationResult(req);
+      if (!errors.isEmpty()) {
+        return res.status(400).json({ message: 'Login error', errors });
+      }
+      const user = await User.findOne({ email });
       if (!user) {
-        return res.status(400).json({ message: `Wrong login or password` });
+        return res.status(400).json({ message: `Wrong email or password` });
       }
       const validPassword = bcrypt.compareSync(password, user.password);
       if (!validPassword) {

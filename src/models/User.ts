@@ -1,4 +1,4 @@
-import { Schema, model, Document, Model } from 'mongoose';
+import { Schema, model, Document, Model, Types } from 'mongoose';
 import { IRole, roleSchema } from './Role';
 
 export interface IUser extends Document {
@@ -18,11 +18,14 @@ export interface IUser extends Document {
   disabled: boolean;
   is_deleted: boolean;
   roles: IRole;
+  favorite_books?: Types.ObjectId[];
+  createdAt?: Date;
+  updatedAt?: Date;
 }
 
 export const userSchema: Schema<IUser> = new Schema(
   {
-    username: { type: String, unique: true, required: true },
+    username: { type: String },
     email: { type: String, unique: true, required: true },
     password: { type: String, required: true },
     first_name: { type: String },
@@ -37,6 +40,7 @@ export const userSchema: Schema<IUser> = new Schema(
     disabled: { type: Boolean },
     is_deleted: { type: Boolean },
     roles: [roleSchema],
+    favorite_books: [{ type: Types.ObjectId, ref: 'Book' }],
   },
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } },
 );
