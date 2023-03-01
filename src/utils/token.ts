@@ -15,7 +15,7 @@ export const generateAccessToken = (id: any, roles: any) => {
     id,
     roles,
   };
-  return jwt.sign(payload, secret, { expiresIn: '24h' });
+  return jwt.sign(payload, secret, { expiresIn: '30d' });
 };
 
 export const getUserIdByToken = (req: Request, res: Response) => {

@@ -41,7 +41,7 @@ export const bookSchema: Schema<IBook> = new Schema(
     type: { type: String },
     genre: { type: String },
     year: { type: Number },
-    owner: userSchema,
+    owner: { type: Schema.Types.ObjectId, ref: 'user' },
     favoritedBy: [{ type: Schema.Types.ObjectId, ref: 'user' }],
   },
   { timestamps: true, toJSON: { virtuals: true }, toObject: { virtuals: true } },
