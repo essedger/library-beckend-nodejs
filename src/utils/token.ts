@@ -1,14 +1,7 @@
 import jwt from 'jsonwebtoken';
 import secret from '../config';
-import { IRole } from '../models/Role';
 import { Request, Response } from 'express';
-
-export interface IMyToken {
-  id: string;
-  exp: number;
-  iat: number;
-  roles: IRole[];
-}
+import { IMyToken } from '../interfaces/token';
 
 export const generateAccessToken = (id: any, roles: any) => {
   const payload = {
@@ -28,6 +21,5 @@ export const getUserIdByToken = (req: Request, res: Response) => {
     return user?.id;
   } catch (e) {
     console.log(e);
-    return e;
   }
 };

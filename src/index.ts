@@ -1,11 +1,16 @@
-import express, { RequestHandler } from 'express';
+import express, { RequestHandler, Request } from 'express';
 import mongoose from 'mongoose';
 import dotenv from 'dotenv';
+import multer, { FileFilterCallback } from 'multer';
+import { fileFilter } from './utils/multer';
+import { fileStorage } from './config';
 import cors from 'cors';
 dotenv.config();
+
 import userRoute from './routes/authRouter';
 import router from './routes/home';
 import booksRoute from './routes/booksRouter';
+import uploadRoute from './routes/uploadRouter';
 
 // .env variables
 const PORT = process.env.PORT || 5005;
@@ -14,7 +19,9 @@ const DB_PASSWORD = process.env.DB_PASSWORD;
 const DB_SERVER = process.env.SERVER_URL;
 const DB_PORT = process.env.DB_PORT;
 
+
 const app = express();
+
 mongoose.set('strictQuery', true);
 //Middleware
 app.use(cors() as RequestHandler);
@@ -24,6 +31,7 @@ app.use(express.json());
 app.use(router);
 app.use(userRoute);
 app.use(booksRoute);
+app.use(uploadRoute);
 
 const start = async () => {
   try {

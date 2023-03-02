@@ -19,6 +19,7 @@ export interface IBook extends Document {
   type: string;
   genre: string;
   year: number;
+  language: string;
   owner: IUser;
   favoritedBy: Types.Array<IUser['id']>;
 }
@@ -41,6 +42,7 @@ export const bookSchema: Schema<IBook> = new Schema(
     type: { type: String },
     genre: { type: String },
     year: { type: Number },
+    language: { type: String },
     owner: { type: Schema.Types.ObjectId, ref: 'user' },
     favoritedBy: [{ type: Schema.Types.ObjectId, ref: 'user' }],
   },

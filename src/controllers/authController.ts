@@ -5,7 +5,8 @@ import jwt from 'jsonwebtoken';
 import { validationResult } from 'express-validator';
 import secret from '../config';
 import { Request, Response } from 'express';
-import { generateAccessToken, IMyToken } from '../utils/token';
+import { generateAccessToken } from '../utils/token';
+import { IMyToken } from '../interfaces/token';
 
 class authController {
   //User register

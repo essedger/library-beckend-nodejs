@@ -3,9 +3,10 @@ import Book, { IBook } from '../models/Book';
 import { validationResult } from 'express-validator';
 import jwt from 'jsonwebtoken';
 import secret from '../config';
-import { getUserIdByToken, IMyToken } from '../utils/token';
+import { getUserIdByToken } from '../utils/token';
 import User from '../models/User';
 import { Types, Query } from 'mongoose';
+import { IMyToken } from '../interfaces/token';
 
 const sendGetBooksResponse = async (
   res: Response,
