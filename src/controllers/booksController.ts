@@ -31,6 +31,7 @@ const sendGetBooksResponse = async (
     totalBooks: count,
   });
 };
+
 class booksController {
   //Get all books
   async getBooks(req: Request, res: Response) {
@@ -97,8 +98,9 @@ class booksController {
     if (!token) {
       return res.status(403).json({ message: 'User is not authorized' });
     }
-    const user = jwt.verify(token, secret) as IMyToken;
+    // const user = jwt.verify(token, secret) as IMyToken;
     try {
+      const user = jwt.verify(token, secret) as IMyToken;
       const errors = validationResult(req);
       if (!errors.isEmpty()) {
         return res.status(400).json({ message: 'Unable to add book', errors });

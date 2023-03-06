@@ -1,19 +1,45 @@
 import { Response } from 'express';
 import { IRequestWithAuthData } from '../interfaces/token';
-import dotenv from 'dotenv';
-dotenv.config();
-const HOST_DOMAIN = process.env.HOST_DOMAIN;
+import Book from '../models/Book';
+import User from '../models/User';
+import { getImageLinkWithHost } from '../utils/multer';
+
+async function updateEntityByType (entity: string, id: string, imageUrl: string) {
+  switch (entity) {
+    case 'avatar': {
+      const userDoc = await User.findOneAndUpdate({ _id: id }, {image: imageUrl}, {
+        new: true,
+        upsert: true,
+      });
+      return userDoc;
+    }
+    case 'book': {
+      const bookDoc = await Book.findOneAndUpdate({ _id: id }, {image: imageUrl}, {
+        new: true,
+        upsert: true,
+      });
+      return bookDoc;
+    }
+  }
+}
 
 class uploadController {
   //Upload image
   async uploadImage(req: IRequestWithAuthData, res: Response) {
-    if (req?.file) {
-      res.status(200).json({
-        message: 'Image uploaded successfully',
-        url: `${HOST_DOMAIN}/${req?.file?.path}`,
-      });
-    } else {
-      res.status(400).json({message: 'Unsupported file type!'})
+    const entityType = req?.body?.type;
+    const entityId = req?.body?.entityId;
+    if (req?.file?.path) {
+      const imageUrl = getImageLinkWithHost(req?.file?.path)
+      const updatedDoc = await updateEntityByType(entityType, entityId, imageUrl);
+      if (req?.file && updatedDoc) {
+        res.status(200).json({
+          message: 'Image uploaded successfully',
+          url: getImageLinkWithHost(req?.file?.path),
+          entityType: updatedDoc,
+        });
+      } else {
+        res.status(400).json({message: 'Unsupported file type!'})
+      }
     }
   }
 }
